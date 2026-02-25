@@ -42,7 +42,7 @@ test.if(isWindows)("standalone worker does not crash when autoloadDotenv is disa
 
   const [stdout, stderr, exitCode] = await Promise.all([proc.stdout.text(), proc.stderr.text(), proc.exited]);
 
-  expect(exitCode).toBe(0);
   expect(stdout).toContain("not found");
+  expect(exitCode).toBe(0);
   expect(stderr).toBe("");
 });

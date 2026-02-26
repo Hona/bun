@@ -3,6 +3,8 @@ import { bunEnv, bunExe, isWindows, tempDir } from "harness";
 import { join } from "path";
 
 test.if(isWindows)("standalone worker does not crash when autoloadDotenv is disabled and .env exists", async () => {
+  const target = process.arch === "arm64" ? "bun-windows-aarch64" : "bun-windows-x64";
+
   using dir = tempDir("issue-27431", {
     ".env": "TEST_VAR=from_dotenv\n",
     "entry.ts": 'console.log(process.env.TEST_VAR || "not found")\nnew Worker("./worker.ts")\n',
@@ -12,7 +14,7 @@ test.if(isWindows)("standalone worker does not crash when autoloadDotenv is disa
         entrypoints: ["./entry.ts", "./worker.ts"],
         compile: {
           autoloadDotenv: false,
-          target: ${JSON.stringify(process.arch === "arm64" ? "bun-windows-aarch64" : "bun-windows-x64")},
+          target: "${target}",
           outfile: "./app.exe",
         },
       });

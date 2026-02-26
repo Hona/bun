@@ -12,7 +12,7 @@ test.if(isWindows)("standalone worker does not crash when autoloadDotenv is disa
         entrypoints: ["./entry.ts", "./worker.ts"],
         compile: {
           autoloadDotenv: false,
-          target: "bun-windows-x64",
+          target: ${JSON.stringify(process.arch === "arm64" ? "bun-windows-aarch64" : "bun-windows-x64")},
           outfile: "./app.exe",
         },
       });
